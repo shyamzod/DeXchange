@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { loggedin } from "../../store/atoms/loginstate";
+import {
+  loggedin,
+  loggedInUserName,
+  loggedInUserEmail,
+} from "../../store/atoms/loginstate";
 import axios from "axios";
 
 export default function Login() {
@@ -9,6 +13,8 @@ export default function Login() {
   const [password, SetPassword] = useState("");
   const navigate = useNavigate();
   const setLoginState = useSetRecoilState(loggedin);
+  const loggedInuser = useSetRecoilState(loggedInUserName);
+  const loggedInemail = useSetRecoilState(loggedInUserEmail);
   async function onLoginHandler(e) {
     e.preventDefault();
     const logindata = {
@@ -19,8 +25,11 @@ export default function Login() {
     const res = result.data;
     if (res.LoggedIn) {
       setLoginState(true);
-      alert("Logged In");
+      loggedInuser(res.UserName);
+      loggedInemail(res.Email);
       navigate("/Home");
+    } else {
+      alert(res.message);
     }
   }
   return (

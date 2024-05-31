@@ -8,8 +8,8 @@ import Home from "./components/Home";
 function App() {
   return (
     <>
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="/Signin" element={<Login />}></Route>

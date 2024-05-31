@@ -83,6 +83,7 @@ function SignInUser(body) {
                     select: {
                         Id: true,
                         UserName: true,
+                        Email: true,
                     },
                 });
                 const statusresult = yield dbclient.userStatus.update({
@@ -129,11 +130,10 @@ app.post("/SignIn", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const body = req.body;
     const result = yield SignInUser(body);
     if (result) {
-        res
-            .status(200)
-            .json({
+        res.status(200).json({
             message: "User SignIn Successfully",
             UserName: result.UserName,
+            Email: result.Email,
             LoggedIn: true,
         });
     }
@@ -162,6 +162,9 @@ app.get("/logout", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const result = yield LogoutUser(username);
         if (result) {
             res.status(200).json({ message: "User Logged Out Successfully!" });
+        }
+        else {
+            res.status(400).json({ message: "User Not Logged Out" });
         }
     }
 }));
