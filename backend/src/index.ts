@@ -83,6 +83,7 @@ async function SignInUser(body: LoginUser) {
         select: {
           Id: true,
           UserName: true,
+          Email: true,
         },
       });
       const statusresult = await dbclient.userStatus.update({
@@ -127,13 +128,12 @@ app.post("/SignIn", async (req, res) => {
   const body = req.body;
   const result = await SignInUser(body);
   if (result) {
-    res
-      .status(200)
-      .json({
-        message: "User SignIn Successfully",
-        UserName: result.UserName,
-        LoggedIn: true,
-      });
+    res.status(200).json({
+      message: "User SignIn Successfully",
+      UserName: result.UserName,
+      Email: result.Email,
+      LoggedIn: true,
+    });
   } else {
     res.status(400).json({ message: "Invalid Credentials" });
   }
@@ -159,6 +159,8 @@ app.get("/logout", async (req, res) => {
     const result = await LogoutUser(username);
     if (result) {
       res.status(200).json({ message: "User Logged Out Successfully!" });
+    } else {
+      res.status(400).json({ message: "User Not Logged Out" });
     }
   }
 });

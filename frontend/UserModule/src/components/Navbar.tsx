@@ -1,13 +1,36 @@
 import { useState } from "react";
-import { loggedin } from "../../store/atoms/loginstate";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+import {
+  loggedInUserName,
+  loggedInUserEmail,
+  loggedin,
+} from "../../store/atoms/loginstate";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const userloggedin = useRecoilValue(loggedin);
+  const [userloggedin, SetUserLoggedIn] = useRecoilState(loggedin);
+  const [loggedInuser, SetLoggedInUser] = useRecoilState(loggedInUserName);
+  const [loggedInEmail, SetLoggedInUserEmail] =
+    useRecoilState(loggedInUserEmail);
+
+  async function logoutHandler() {
+    const result = await axios.get("http://localhost:3000/logout", {
+      params: { username: loggedInuser },
+    });
+    const res = await result.data;
+    if (res) {
+      SetUserLoggedIn(false);
+      SetLoggedInUser("");
+      SetLoggedInUserEmail("");
+      navigate("/signin");
+    }
+  }
 
   return (
     <div>
@@ -47,20 +70,20 @@ export default function Navbar() {
               >
                 <div className="px-4 py-3">
                   <span className="block text-sm text-gray-900 dark:text-white">
-                    Bonnie Green
+                    {loggedInuser}
                   </span>
                   <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                    name@flowbite.com
+                    {loggedInEmail}
                   </span>
                 </div>
                 <ul className="py-2" aria-labelledby="user-menu-button">
                   <li>
-                    <a
-                      href="#"
+                    <li
+                      onClick={logoutHandler}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                       Sign out
-                    </a>
+                    </li>
                   </li>
                 </ul>
               </div>
