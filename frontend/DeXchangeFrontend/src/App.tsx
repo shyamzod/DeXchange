@@ -12,7 +12,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/Signup" element={<SignUp />}></Route>
-          <Route path="/Signin" element={<Login />}></Route>
+          <Route path="/" element={<Login />}></Route>
           <Route path="/Home" element={<MainComponent />}></Route>
         </Routes>
       </BrowserRouter>
