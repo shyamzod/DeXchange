@@ -20,7 +20,7 @@ export default function SignUp() {
         Password: password,
       };
       const result = await axios.post(
-        "http://localhost:3000/signup",
+        "http://localhost:3000/user/signup",
         registerdata
       );
       const jsonres = await result.data;

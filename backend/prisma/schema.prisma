@@ -13,19 +13,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  Id Int @id @default(autoincrement())
-  UserName String @unique
-  FullName String
-  Email String
-  PhoneNo BigInt
-  Password String
-
+model User {
+  UserId     Int        @id @default(autoincrement())
+  UserName   String     @unique
+  FullName   String
+  Email      String
+  PhoneNo    BigInt
+  Password   String
   UserStatus UserStatus?
+  UserWallet UserWallet?
 }
 
-model UserStatus{
-  UserName String @id @unique
-  Status Boolean @default(false)
-  User User @relation(fields: [UserName],references: [UserName])
-} 
+model UserStatus {
+  id       Int    @id @default(autoincrement())
+  UserId   Int @unique
+  UserName String @unique
+  Status   Boolean @default(false)
+  User     User   @relation(fields: [UserId], references: [UserId])
+}
+
+model UserWallet {
+  UserWalletId Int     @id @default(autoincrement())
+  UserId       Int @unique
+  username     String  @unique
+  BTCBalance   Int
+  USDTBalance  Float
+  User         User    @relation(fields: [UserId], references: [UserId])
+}
+
+model userBankBalance{
+  Id Int @id @default(autoincrement())
+  Branch String
+  username String @unique
+  BankBalance Float
+}

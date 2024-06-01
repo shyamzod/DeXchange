@@ -20,11 +20,12 @@ export default function Navbar() {
     useRecoilState(loggedInUserEmail);
 
   async function logoutHandler() {
-    const result = await axios.get("http://localhost:3000/logout", {
-      params: { username: loggedInuser },
+    const result = await axios.get("http://localhost:3000/user/logout", {
+      params: { username: localStorage.getItem("UserName") },
     });
     const res = await result.data;
     if (res) {
+      localStorage.clear();
       SetUserLoggedIn(false);
       SetLoggedInUser("");
       SetLoggedInUserEmail("");
@@ -46,7 +47,7 @@ export default function Navbar() {
               DeXchange
             </span>
           </a>
-          {userloggedin ? (
+          {userloggedin || localStorage.getItem("UserName") ? (
             <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
               <button
                 type="button"
@@ -70,10 +71,10 @@ export default function Navbar() {
               >
                 <div className="px-4 py-3">
                   <span className="block text-sm text-gray-900 dark:text-white">
-                    {loggedInuser}
+                    {localStorage.getItem("UserName")}
                   </span>
                   <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                    {loggedInEmail}
+                    {localStorage.getItem("Email")}
                   </span>
                 </div>
                 <ul className="py-2" aria-labelledby="user-menu-button">
@@ -120,7 +121,7 @@ export default function Navbar() {
               Login
             </a>
           )}
-          <div
+          {/* <div
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="navbar-user"
           >
@@ -143,7 +144,7 @@ export default function Navbar() {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </nav>
     </div>

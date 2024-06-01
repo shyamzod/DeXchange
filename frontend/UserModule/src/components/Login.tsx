@@ -15,18 +15,23 @@ export default function Login() {
   const setLoginState = useSetRecoilState(loggedin);
   const loggedInuser = useSetRecoilState(loggedInUserName);
   const loggedInemail = useSetRecoilState(loggedInUserEmail);
-  async function onLoginHandler(e) {
-    e.preventDefault();
+  async function onLoginHandler(evt) {
+    evt.preventDefault();
     const logindata = {
       UserName: username,
       Password: password,
     };
-    const result = await axios.post("http://localhost:3000/signin", logindata);
+    const result = await axios.post(
+      "http://localhost:3000/user/signin",
+      logindata
+    );
     const res = result.data;
     if (res.LoggedIn) {
       setLoginState(true);
       loggedInuser(res.UserName);
       loggedInemail(res.Email);
+      localStorage.setItem("UserName", res.UserName);
+      localStorage.setItem("Email", res.Email);
       navigate("/Home");
     } else {
       alert(res.message);

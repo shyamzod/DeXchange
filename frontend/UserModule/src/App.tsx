@@ -3,7 +3,7 @@ import "./App.css";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import SignUp from "./components/Signup";
-import Home from "./components/Home";
+import MainComponent from "./components/MainComponent";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="/Signin" element={<Login />}></Route>
-          <Route path="/Home" element={<Home />}></Route>
+          <Route path="/Home" element={<MainComponent />}></Route>
         </Routes>
       </BrowserRouter>
     </>
